@@ -28,7 +28,7 @@ stages:
       inputs:
         gradleWrapperFile: 'gradlew'  # Path to your Gradle wrapper
         tasks: 'clean build'  # Replace with the tasks you want to run
-        jdkArchitectureOption: 'x64
+        jdkArchitectureOption: 'x64'
     - task: Docker@2
       displayName: Build an image
       inputs:
