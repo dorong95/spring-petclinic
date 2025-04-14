@@ -8,14 +8,18 @@ trigger:
 
 pool:
   name: h-self-hosted
-  vmImage: ubuntu-latest
+  # vmImage: ubuntu-latest # Azure-hosted agent 사용 시
   
 variables:
   JAVA_HOME: '/usr/lib/jvm/java-17-openjdk-amd64'
+  PATH: $(JAVA_HOME)/bin:$(PATH)
   
 steps:
+- checkout: self  # 코드 가져오기
+
 - script: printenv | grep JAVA_HOME
   displayName: 'Print JAVA_HOMEs'
+  
 - task: Gradle@3
   inputs:
     gradleWrapperFile: 'gradlew'  # Path to your Gradle wrapper
