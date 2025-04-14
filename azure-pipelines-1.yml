@@ -9,10 +9,13 @@ trigger:
 pool:
   name: h-self-hosted
   vmImage: ubuntu-latest
+  
 variables:
-  JAVA_HOME: $(JAVA_HOME_17_X64)
+  JAVA_HOME: '/usr/lib/jvm/java-17-openjdk-amd64'
   
 steps:
+- script: printenv | grep JAVA_HOME
+  displayName: 'Print JAVA_HOMEs'
 - task: Gradle@3
   inputs:
     gradleWrapperFile: 'gradlew'  # Path to your Gradle wrapper
