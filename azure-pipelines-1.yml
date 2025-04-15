@@ -29,9 +29,8 @@ stages:
         SecretsFilter: '*'  # 가져올 비밀을 선택합니다. *: 전체
         UseManagedIdentity: true
         UserAssignedIdentity: '/subscriptions/f32b0b12-1781-49a3-a03d-02a5338f1f60/resourcegroups/rg-h-cicd-lab/providers/Microsoft.ManagedIdentity/userAssignedIdentities/devops-identity'
-    - displayName: 'Display secret'
-      script: |
+    - script: |
         echo "Secret int Value : $(int-ssh-key)"
         echo "Secret pipeline Value : $(pipeline-test)"
-
+      displayName: 'Display secret'
 
