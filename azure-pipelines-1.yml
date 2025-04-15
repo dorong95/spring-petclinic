@@ -35,6 +35,7 @@ stages:
         echo "Secret Unmask pipeline Value : $(pipelineTest)"
       displayName: 'Display secret'
   - job: test_env_Vault
+    dependsOn: Vault  # Vault이 끝나야 test_env_Vault가 실행됨
     displayName: test env vault values
     steps:
     - script: |
