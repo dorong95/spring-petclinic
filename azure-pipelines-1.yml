@@ -26,7 +26,7 @@ stages:
       inputs:
         azureSubscription: 'keyvault service'  # Azure Subscription 연결 이름
         KeyVaultName: 'key-ssh-h-lab'  # Azure Key Vault 이름
-        SecretsFilter: '*'  # 가져올 비밀을 선택합니다. 특정 비밀만 가져오려면 이름을 입력할 수 있습니다.
+        SecretsFilter: '*'  # 가져올 비밀을 선택합니다. *: 전체
         UseManagedIdentity: true
         UserAssignedIdentity: '/subscriptions/f32b0b12-1781-49a3-a03d-02a5338f1f60/resourcegroups/rg-h-cicd-lab/providers/Microsoft.ManagedIdentity/userAssignedIdentities/devops-identity'
     - script: |
