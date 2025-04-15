@@ -34,7 +34,7 @@ stages:
         echo "##vso[task.setvariable variable=pipelineTest;issecret=false]$pipeline-test"
         echo "Secret Unmask pipeline Value : $(pipelineTest)"
       displayName: 'Display secret'
-  - job: test env Vault
+  - job: test_env_Vault
     displayName: test env vault values
     steps:
     - script: |
