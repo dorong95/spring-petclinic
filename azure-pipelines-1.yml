@@ -33,11 +33,14 @@ stages:
         echo "Secret pipeline Value : $(pipeline-test)"
         echo "##vso[task.setvariable variable=pipelineTest;isOutput=true]$(pipeline-test)"
       displayName: 'Display secret'
+      name: vaultOutput
   - job: test_env_Vault
     dependsOn: Vault  # Vault이 끝나야 test_env_Vault가 실행됨
     displayName: test env vault values
+    variables:
+      vaultVarFromJob: $[ dependencies.Vault.outputs['vaultOutput.pipelineTest'] ]  
     steps:
     - bash: |
-        echo "test Secret pipeline Value : $(Vault.pipelineTest)"
+        echo "test Secret pipeline Value : $(vaultVarFromJob)"
       displayName: 'Test Display secret'
 
