@@ -38,6 +38,6 @@ stages:
     displayName: test env vault values
     steps:
     - bash: |
-        echo "test Secret pipeline Value : $(Vault.setSecret.pipelineTest)"
+        echo "test Secret pipeline Value : $(Vault.pipelineTest)"
       displayName: 'Test Display secret'
 
