@@ -14,33 +14,61 @@ variables:
   JAVA_HOME: '/usr/lib/jvm/java-17-openjdk-amd64'
 
 stages:
-- stage: Vault
-  displayName: Vault
-  jobs:
-  - job: Vault
-    displayName: test vault values
-    #pool:
-    #  vmImage: ubuntu-latest
-    steps:
-    - task: AzureKeyVault@2
-      inputs:
-        azureSubscription: 'keyvault service'  # Azure Subscription 연결명
-        KeyVaultName: 'key-ssh-h-lab'  # Azure Key Vault 이름
-        SecretsFilter: '*'  # 가져올 비밀을 선택합니다. *: 전체
-        UseManagedIdentity: true
-        UserAssignedIdentity: '/subscriptions/f32b0b12-1781-49a3-a03d-02a5338f1f60/resourcegroups/rg-h-cicd-lab/providers/Microsoft.ManagedIdentity/userAssignedIdentities/devops-identity'
-    - bash: |
-        echo "Secret pipeline Value : $(pipeline-test)"
-        echo "##vso[task.setvariable variable=pipelineTest;isOutput=true]$(pipeline-test)"
-      displayName: 'Display secret'
-      name: vaultOutput
-  - job: test_env_Vault
-    dependsOn: Vault  # Vault이 끝나야 test_env_Vault가 실행됨
-    displayName: test env vault values
-    variables:
-      vaultVarFromJob: $[ dependencies.Vault.outputs['vaultOutput.pipelineTest'] ]  
-    steps:
-    - bash: |
-        echo "test Secret pipeline Value : $(vaultVarFromJob)"
-      displayName: 'Test Display secret'
+- stage: Build
+   displayName: Build
+   jobs:
+   - job: Build
+     displayName: Source Build
+     #pool:
+     #  vmImage: ubuntu-latest
+     steps:
+     - checkout: self  # 코드 가져오기
+     - task: Gradle@3
+       displayName: Build an Source
+       inputs:
+         gradleWrapperFile: 'gradlew'  # Path to your Gradle wrapper
+         tasks: 'clean build'  # Replace with the tasks you want to run
+         jdkArchitectureOption: 'x64'
+     - task: Docker@2
+       displayName: 'Login to CR'
+       inputs:
+         command: 'login'
+         containerRegistry: 'imageregistry'
+     #- task: Docker@2
+     #  displayName: Build an image
+     #  inputs:
+     #    command: build
+     #    dockerfile: '**/Dockerfile'
+     #    buildContext: $(Build.SourcesDirectory)
+     #    tags: |
+     #      $(tag)
+#- stage: Vault
+#  displayName: Vault
+#  jobs:
+#  - job: Vault
+#    displayName: test vault values
+#    #pool:
+#    #  vmImage: ubuntu-latest
+#    steps:
+#    - task: AzureKeyVault@2
+#      inputs:
+#        azureSubscription: 'keyvault service'  # Azure Subscription 연결명
+#        KeyVaultName: 'key-ssh-h-lab'  # Azure Key Vault 이름
+#        SecretsFilter: '*'  # 가져올 비밀을 선택합니다. *: 전체
+#        UseManagedIdentity: true
+#        UserAssignedIdentity: '/subscriptions/f32b0b12-1781-49a3-a03d-02a5338f1f60/resourcegroups/rg-h-cicd-lab/providers/Microsoft.ManagedIdentity/userAssignedIdentities/devops-identity'
+#    - bash: |
+#        echo "Secret pipeline Value : $(pipeline-test)"
+#        echo "##vso[task.setvariable variable=pipelineTest;isOutput=true]$(pipeline-test)"
+#      displayName: 'Display secret'
+#      name: vaultOutput
+#  - job: test_env_Vault
+#    dependsOn: Vault  # Vault이 끝나야 test_env_Vault가 실행됨
+#    displayName: test env vault values
+#    variables:
+#      vaultVarFromJob: $[ dependencies.Vault.outputs['vaultOutput.pipelineTest'] ]  
+#    steps:
+#    - bash: |
+#        echo "test Secret pipeline Value : $(vaultVarFromJob)"
+#      displayName: 'Test Display secret'
 
