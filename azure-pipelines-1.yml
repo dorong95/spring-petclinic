@@ -24,7 +24,7 @@ stages:
     steps:
     - task: AzureKeyVault@2
       inputs:
-        azureSubscription: 'keyvault service'  # Azure Subscription 연결 이름
+        azureSubscription: 'keyvault service'  # Azure Subscription 연결명
         KeyVaultName: 'key-ssh-h-lab'  # Azure Key Vault 이름
         SecretsFilter: '*'  # 가져올 비밀을 선택합니다. *: 전체
         UseManagedIdentity: true
